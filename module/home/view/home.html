@@ -1,0 +1,109 @@
+<main class="flex-grow">
+
+    <!-- Carrusel Principal -->
+    <section class="relative w-full overflow-hidden">
+        <div class="swiper swiper-eventos-imagenes h-[500px] md:h-[700px]">
+            <div class="swiper-wrapper" id="containerEventsImages"></div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- Peleas -->
+    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-primary font-extrabold tracking-widest text-sm uppercase mb-2 italic">Cartelera</h2>
+                <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">PRÓXIMAS PELEAS</h3>
+            </div>
+            <a class="text-primary font-bold flex items-center gap-1 hover:underline" href="#">
+                Ver todas <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+        </div>
+        <div class="swiper swiper-fights">
+            <div class="swiper-wrapper" id="containerFights"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- Luchadores -->
+    <section class="bg-primary/5 dark:bg-primary/10 py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-primary font-extrabold tracking-widest text-sm uppercase mb-2 italic">Roster</h2>
+                    <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">LUCHADORES</h3>
+                </div>
+            </div>
+            <div class="swiper swiper-fighters">
+                <div class="swiper-wrapper" id="containerFighters"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías -->
+    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-primary font-extrabold tracking-widest text-sm uppercase mb-2 italic">Divisiones</h2>
+                <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">CATEGORÍAS</h3>
+            </div>
+        </div>
+        <div class="swiper swiper-categories">
+            <div class="swiper-wrapper" id="containerCategories"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- Ciudades -->
+    <section class="bg-primary/5 dark:bg-primary/10 py-8 md:py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-primary font-extrabold tracking-widest text-sm uppercase mb-2 italic">Ubicaciones</h2>
+                    <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">CIUDADES</h3>
+                </div>
+            </div>
+            <div class="swiper swiper-cities">
+                <div class="swiper-wrapper" id="containerCities"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recintos -->
+    <section class="max-w-7xl mx-auto px-4 py-8 md:py-12">
+        <div class="flex justify-between items-end mb-12">
+            <div>
+                <h2 class="text-primary font-extrabold tracking-widest text-sm uppercase mb-2 italic">Arenas</h2>
+                <h3 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">RECINTOS</h3>
+            </div>
+        </div>
+        <div class="swiper swiper-venues">
+            <div class="swiper-wrapper" id="containerVenues"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="bg-primary py-16">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="text-white">
+                <h2 class="text-3xl md:text-5xl font-black italic tracking-tighter mb-2 leading-none uppercase">Acceso anticipado</h2>
+                <p class="text-white/80 font-medium text-lg">Suscríbete para recibir preventas y noticias exclusivas de MMA.</p>
+            </div>
+            <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+                <input class="px-6 py-4 rounded-xl bg-white text-slate-900 border-none w-full md:w-80 focus:ring-2 focus:ring-white/50" placeholder="Tu correo electrónico" type="email"/>
+                <button class="bg-background-dark text-white hover:bg-background-dark/90 px-8 py-4 rounded-xl font-bold transition-all uppercase tracking-widest">Suscribirse</button>
+            </div>
+        </div>
+    </section>
+
+</main>

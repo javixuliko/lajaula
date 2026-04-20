@@ -1,0 +1,87 @@
+<!-- Hero Section -->
+<section id="section-hero" class="relative w-full flex items-end overflow-hidden" style="min-height:300px;">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(to top, #221010 0%, transparent 60%, rgba(34,16,16,0.5) 100%), url('assets/img/shop_hero.jpg'); background-color:#2a1414;"></div>
+    <div class="relative max-w-7xl mx-auto px-4 w-full pb-12 pt-24">
+        <div class="inline-flex items-center gap-2 bg-primary px-3 py-1 rounded text-xs font-bold uppercase tracking-widest text-white mb-4">
+            <span class="material-symbols-outlined text-sm">local_fire_department</span> Próximos Eventos
+        </div>
+        <h2 class="text-5xl md:text-6xl font-black text-white leading-none uppercase tracking-tighter italic mb-3">
+            SHOP <span class="text-primary">LA JAULA</span>
+        </h2>
+        <p class="text-lg text-slate-300 font-medium max-w-lg">Consigue tus entradas para los mejores eventos de MMA.</p>
+    </div>
+</section>
+
+<!-- Main Content -->
+<main id="section-main" class="max-w-7xl mx-auto px-4 py-10 flex flex-col lg:flex-row gap-8">
+
+    <!-- Sidebar Filters -->
+    <aside class="w-full lg:w-72 shrink-0 space-y-6">
+        <div class="bg-neutral-900 border border-primary/10 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-white uppercase tracking-tight flex items-center gap-2">
+                    Filtros
+                    <span id="filter-count-badge"
+                        class="hidden bg-primary text-white rounded-full px-2 py-0.5 text-[10px] font-black">
+                        0
+                    </span>
+                </h3>
+            </div>
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm text-primary">search</span> Buscar
+                    </label>
+                    <input type="text" placeholder="Evento, luchador..." class="w-full bg-background-dark border border-primary/20 rounded-lg p-2 text-sm text-slate-100 focus:border-primary outline-none transition-all" />
+                </div>
+                <div class="filters"></div>
+            </div>
+        </div>
+
+        <div class="bg-primary rounded-xl p-6 text-white overflow-hidden relative group cursor-pointer">
+            <div class="relative z-10">
+                <h4 class="font-black text-xl leading-tight uppercase italic mb-2">Miembros<br/>VIP</h4>
+                <p class="text-xs text-white/80 font-medium mb-4">20% de descuento en todas las entradas esta temporada.</p>
+                <button class="bg-white text-primary px-4 py-2 rounded-lg text-xs font-bold uppercase">Ver más</button>
+            </div>
+            <span class="material-symbols-outlined absolute -bottom-4 -right-4 text-white/10 text-9xl group-hover:scale-110 transition-transform" style="font-variation-settings:'FILL' 1;">military_tech</span>
+        </div>
+    </aside>
+
+    <!-- Event Grid -->
+    <div class="flex-1">
+        <div class="flex items-center justify-between mb-8">
+            <h3 class="text-2xl font-black text-white uppercase italic tracking-tighter">Eventos Disponibles</h3>
+            <div class="flex items-center gap-2 text-sm">
+                <span class="text-slate-400">Ordenar:</span>
+                <button class="text-white font-bold flex items-center gap-1">Fecha <span class="material-symbols-outlined text-sm">expand_more</span></button>
+            </div>
+        </div>
+
+        <!-- Active Filters Bar -->
+        <div id="active-filters-bar" style="display:none; margin-bottom:20px;">
+            <div class="flex flex-wrap gap-2 items-center bg-neutral-900 border border-primary/10 rounded-xl px-4 py-3">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest shrink-0">Filtros activos:</span>
+                <div id="active-chips" class="flex flex-wrap gap-2"></div>
+                <button id="clear-all-filters" class="ml-auto text-xs text-primary border border-primary/30 hover:bg-primary/10 rounded-full px-3 py-1 transition-all font-bold uppercase">
+                    Limpiar todo
+                </button>
+            </div>
+        </div>
+
+        <!-- IDs y clases originales -->
+        <div class="container_shop grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="content_shop_eventos"></div>
+
+        <div class="mt-10 flex justify-center">
+            <button class="bg-neutral-900 border border-primary/30 hover:bg-primary/10 text-white px-10 py-3 rounded-lg font-bold uppercase tracking-widest transition-all">
+                Cargar más
+            </button>
+        </div>
+    </div>
+</main>
+
+<div id="details-shop" style="display:none">
+    <div id="container-date-img" class="relative w-full"></div>
+    <!-- Info -->
+    <div class="date_evento w-full px-4 py-10"></div>
+</div>
