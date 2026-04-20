@@ -78,6 +78,7 @@ function ajaxForSearch(url, filter) {
                     });
                 }
             }, 50);
+            mapBox_all(data);
         }).catch(function() {
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Function ajxForSearch SHOP";
             console.log("error");
@@ -222,13 +223,7 @@ function loadDetails(id_event) {
                                     <h4 class="text-xs font-black tracking-widest text-slate-100 uppercase italic">Localización del Recinto</h4>
                                 </div>
                             </div>
-                            <div class="p-8 flex items-center justify-center" style="height:200px; background-color:#351c1c">
-                                <div class="text-center space-y-2">
-                                    <span class="material-symbols-outlined text-5xl" style="color:#f20d0d">location_on</span>
-                                    <p class="text-white font-black uppercase italic text-lg">${venue_name}</p>
-                                    <p class="text-slate-400 text-sm">${city_name}, ${country}</p>
-                                </div>
-                            </div>
+                            <div id="map-detail" style="height:300px; width:100%;"></div>
                         </div>
                     </div>
                     <!-- Amenities -->
@@ -274,29 +269,25 @@ function loadDetails(id_event) {
 
         setTimeout(() => {
             new Swiper('.swiper-details', {
-            loop: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false
-            },
-            speed: 600,
-            navigation: {
-                nextEl: '.swiper-details .swiper-button-next',
-                prevEl: '.swiper-details .swiper-button-prev'
-            },
-            pagination: {
-                el: '.swiper-details .swiper-pagination',
-                clickable: true
-            }
-        });
+                loop: true,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false
+                },
+                speed: 600,
+                navigation: {
+                    nextEl: '.swiper-details .swiper-button-next',
+                    prevEl: '.swiper-details .swiper-button-prev'
+                },
+                pagination: {
+                    el: '.swiper-details .swiper-pagination',
+                    clickable: true
+                }
+            });
 
-
-            // 👇 Fuerza scroll al top después de que Swiper termine de ajustar el layout
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
+            mapBox(data[0]);
         }, 50);
-
-
     }).catch(function() {
         // window.location.href = "...";
     });
@@ -617,6 +608,88 @@ function filter_button() {
                 ajaxForSearch("modules/shop/crtl/crtl_shop.php?op=shopAll");
                 highlight(filter);
             } */
+
+
+let mapInstance = null;
+
+function mapBox_all(shop) {
+    if (mapInstance) {
+        mapInstance.remove(); // 👈 destruye el mapa anterior
+        mapInstance = null;
+    }
+
+    mapInstance = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mapInstance);
+
+    for (let row in shop) {
+        const images = Array.isArray(shop[row].images) ? shop[row].images : [];
+        const swiperId = 'map-swiper-' + shop[row].id_event;
+
+        const slides = images.map(img =>
+            '<div class="swiper-slide"><img src="' + img + '" style="width:200px; height:110px; object-fit:cover;"/></div>'
+        ).join('');
+
+        const popupHTML =
+            '<div class="swiper ' + swiperId + '" style="width:210px; height:120px;">' +
+                '<div class="swiper-wrapper">' + slides + '</div>' +
+                '<div class="swiper-button-next" style="transform:scale(0.45); color:#f20d0d;"></div>' +
+                '<div class="swiper-button-prev" style="transform:scale(0.45); color:#f20d0d;"></div>' +
+            '</div>' +
+            '<div style="padding: 10px 12px;">' +
+                '<span style="background:#f20d0d; color:white; font-size:10px; font-weight:900; padding:2px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.1em;">' + shop[row].org_name + '</span>' +
+                '<h3 style="color:white; font-weight:900; font-size:13px; text-transform:uppercase; font-style:italic; margin:6px 0 4px;">' + shop[row].event_name + '</h3>' +
+                '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📅 ' + shop[row].event_date + '</p>' +
+                '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📍 ' + shop[row].venue_name + ', ' + shop[row].city_name + '</p>' +
+                '<p style="color:#f20d0d; font-weight:900; font-size:15px; margin-top:6px;">Desde ' + shop[row].base_price + '€</p>' +
+            '</div>';
+
+        const marker = L.marker([shop[row].lat, shop[row].longi])
+            .addTo(mapInstance)
+            .bindPopup(popupHTML, { maxWidth: 220, className: 'popup-mma' });
+        
+        marker.on('popupopen', function() {
+            setTimeout(function() {
+                new Swiper('.' + swiperId, {
+                    loop: images.length > 1,
+                    navigation: {
+                        nextEl: '.' + swiperId + ' .swiper-button-next',
+                        prevEl: '.' + swiperId + ' .swiper-button-prev'
+                    }
+                });
+            }, 50);
+        });
+    }
+}
+
+let mapDetailInstance = null;
+
+function mapBox(id) {
+    if (mapDetailInstance) {
+        mapDetailInstance.remove();
+        mapDetailInstance = null;
+    }
+
+    mapDetailInstance = L.map('map-detail').setView([id.lat, id.longi], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mapDetailInstance);
+
+    const popupHTML =
+        '<h4>' + id.event_name + '</h4>' +
+        '<p>' + id.venue_name + ', ' + id.city_name + '</p>' +
+        '<p>' + id.event_date + '</p>' +
+        '<p>Desde <b>' + id.base_price + '€</b></p>';
+
+    L.marker([id.lat, id.longi])
+        .addTo(mapDetailInstance)
+        .bindPopup(popupHTML)
+        .openPopup();
+}
+
 
 $(document).ready(function() {
     loadEventos();

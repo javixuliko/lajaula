@@ -159,3 +159,28 @@ h1{
 .back-btn-shop:hover .back-arrow {
     transform: translateX(-5px);
 }
+
+.popup-mma .leaflet-popup-content-wrapper {
+    background: #1a0a0a;
+    border: 1px solid rgba(242, 13, 13, 0.4);
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    color: white;
+}
+
+.popup-mma .leaflet-popup-tip {
+    background: #1a0a0a;
+}
+
+.popup-mma .leaflet-popup-content {
+    margin: 0;
+    width: 210px !important;
+}
+
+.popup-mma .leaflet-popup-close-button {
+    color: #f20d0d !important;
+    font-size: 18px !important;
+    top: 6px !important;
+    right: 8px !important;
+}

@@ -4,7 +4,7 @@ include($path . "model/connect.php");
 
 class DAOShop{
     function select_all_eventos() {
-        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, o.org_name, o.org_logo,
+        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.lat, v.longi, o.org_name, o.org_logo,
                     CONCAT('[\"', GROUP_CONCAT(DISTINCT ei.image_url SEPARATOR '\",\"'), '\"]') AS images,
                     GROUP_CONCAT(DISTINCT cat.cat_name SEPARATOR ',') AS categories
                 FROM events e
@@ -35,7 +35,7 @@ class DAOShop{
     }
 
     function filter($filter) {
-        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, o.org_name, o.org_logo,
+        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.lat, v.longi, o.org_name, o.org_logo,
                     CONCAT('[\"', GROUP_CONCAT(DISTINCT ei.image_url SEPARATOR '\",\"'), '\"]') AS images,
                     GROUP_CONCAT(DISTINCT cat.cat_name SEPARATOR ',') AS categories
                 FROM events e
@@ -134,7 +134,7 @@ class DAOShop{
     }
 
 	function select_one_evento($id) {
-        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.address, v.capacity,
+        $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.address, v.capacity, v.lat, v.longi,
                        o.org_name, o.org_logo
                 FROM events e
                 LEFT JOIN cities c ON e.id_city = c.id_city
