@@ -11,6 +11,14 @@ function loadEventos() {
     } else {
         ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=all_eventos");
     }
+
+    var pendingId = localStorage.getItem('pendingEventDetail');
+    if (pendingId) {
+        localStorage.removeItem('pendingEventDetail');
+        setTimeout(function() {
+            loadDetails(pendingId);
+        }, 300);
+    }
 }
 
 function ajaxForSearch(url, filter) {

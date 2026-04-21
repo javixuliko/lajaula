@@ -240,6 +240,80 @@ function loadVenues() {
     }).catch(function() {});
 }
 
+function clicks(){
+    // Evento
+    $(document).on("click", '.slide-evento', function(){
+        localStorage.setItem('pendingEventDetail', this.getAttribute('id'));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+
+    // Pelea filtrar por 2 peleadores
+    $(document).on("click", '.slide-fight', function(){
+        var filters = [];
+        var f1 = this.getAttribute('data-fighter1');
+        var f2 = this.getAttribute('data-fighter2');
+        var l1 = this.getAttribute('data-fighter1-label');
+        var l2 = this.getAttribute('data-fighter2-label');
+        filters.push(["fighters", [f1, f2], [l1, l2]]);
+        localStorage.removeItem('filter');
+        localStorage.setItem('filter', JSON.stringify(filters));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+
+    // Peleador
+    $(document).on("click", '.slide-fighter', function(){
+        var filters = [];
+        var label = $(this).find('h4').text().trim();
+        filters.push(["fighters", [this.getAttribute('id')], [label]]);
+        localStorage.removeItem('filter');
+        localStorage.setItem('filter', JSON.stringify(filters));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+
+    // Categoría
+    $(document).on("click", '.slide-category', function(){
+        var filters = [];
+        var label = $(this).find('h4').text().trim();
+        filters.push(["categories", [this.getAttribute('id')], [label]]);
+        localStorage.removeItem('filter');
+        localStorage.setItem('filter', JSON.stringify(filters));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+
+    // Ciudad
+    $(document).on("click", '.slide-city', function(){
+        var filters = [];
+        var label = $(this).find('h4').text().trim();
+        filters.push(["cities", [this.getAttribute('id')], [label]]);
+        localStorage.removeItem('filter');
+        localStorage.setItem('filter', JSON.stringify(filters));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+
+    // Recinto usa la ciudad
+    $(document).on("click", '.slide-venue', function(){
+        var filters = [];
+        var cityId = this.getAttribute('data-city-id');
+        var cityLabel = $(this).find('.text-primary').text().trim();
+        filters.push(["cities", [cityId], [cityLabel]]);
+        localStorage.removeItem('filter');
+        localStorage.setItem('filter', JSON.stringify(filters));
+        setTimeout(function(){ 
+            window.location.href = 'index.php?module=ctrl_shop&op=list';
+        }, 1000);  
+    }); 
+}
+
 $(document).ready(function () {
     //console.log('controller_home.js loaded');
 
@@ -249,4 +323,5 @@ $(document).ready(function () {
     loadCategories();
     loadCities();
     loadVenues();
+    clicks();
 });
