@@ -286,6 +286,7 @@ function loadDetails(id_event) {
             });
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            data[0].images = data[1].map(img => img.image_url);
             mapBox(data[0]);
         }, 50);
     }).catch(function() {
@@ -678,16 +679,49 @@ function mapBox(id) {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(mapDetailInstance);
 
-    const popupHTML =
-        '<h4>' + id.event_name + '</h4>' +
-        '<p>' + id.venue_name + ', ' + id.city_name + '</p>' +
-        '<p>' + id.event_date + '</p>' +
-        '<p>Desde <b>' + id.base_price + '€</b></p>';
+    const images = Array.isArray(id.images) ? id.images : [];
+    const swiperId = 'map-detail-swiper-' + id.id_event;
 
-    L.marker([id.lat, id.longi])
+    const slides = images.map(img =>
+        '<div class="swiper-slide"><img src="' + img + '" style="width:220px; height:120px; object-fit:cover;"/></div>'
+    ).join('');
+
+    const popupHTML =
+        '<div class="' + swiperId + ' swiper" style="width:220px; height:120px;">' +
+            '<div class="swiper-wrapper">' + slides + '</div>' +
+            (images.length > 1
+                ? '<div class="swiper-button-next" style="transform:scale(0.45); color:#f20d0d;"></div>' +
+                  '<div class="swiper-button-prev" style="transform:scale(0.45); color:#f20d0d;"></div>'
+                : '') +
+            '<div class="swiper-pagination"></div>' +
+        '</div>' +
+        '<div style="padding:10px 12px 12px;">' +
+            '<span style="background:#f20d0d; color:white; font-size:10px; font-weight:900; padding:2px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.1em;">' + id.org_name + '</span>' +
+            '<h3 style="color:white; font-weight:900; font-size:13px; text-transform:uppercase; font-style:italic; margin:6px 0 4px; line-height:1.3;">' + id.event_name + '</h3>' +
+            '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📅 ' + id.event_date + '</p>' +
+            '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📍 ' + id.venue_name + ', ' + id.city_name + '</p>' +
+            '<p style="color:#f20d0d; font-weight:900; font-size:15px; margin-top:6px;">Desde ' + id.base_price + '€</p>' +
+        '</div>';
+
+    const marker = L.marker([id.lat, id.longi])
         .addTo(mapDetailInstance)
-        .bindPopup(popupHTML)
-        .openPopup();
+        .bindPopup(popupHTML, { maxWidth: 240, className: 'popup-mma' })
+
+    marker.on('popupopen', function () {
+        setTimeout(function () {
+            new Swiper('.' + swiperId, {
+                loop: images.length > 1,
+                pagination: {
+                    el: '.' + swiperId + ' .swiper-pagination',
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: '.' + swiperId + ' .swiper-button-next',
+                    prevEl: '.' + swiperId + ' .swiper-button-prev'
+                }
+            });
+        }, 50);
+    });
 }
 
 
