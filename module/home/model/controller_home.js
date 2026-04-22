@@ -7,8 +7,8 @@ function loadEventosImagenes() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_image)
+                .addClass("swiper-slide slide-evento")
+                .attr('id', data[row].id_event)
                 .appendTo('#containerEventsImages')
                 .html(
                     "<div style='width:100%; height:100%; background-image: url(" 
@@ -36,8 +36,15 @@ function loadFights() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_fight)
+                .addClass("swiper-slide slide-fight")
+            .attr({
+                'id': data[row].id_fight,
+                'data-fighter1': data[row].id_fighter1,
+                'data-fighter2': data[row].id_fighter2,
+                'data-fighter1-label': data[row].fighter1_name,
+                'data-fighter2-label': data[row].fighter2_name,
+                'style': 'cursor:pointer'
+            })
                 .appendTo('#containerFights')
                 .html(
                     "<div class='group dark:bg-background-dark rounded-xl overflow-hidden shadow-xl " + 
@@ -80,8 +87,8 @@ function loadFighters() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_fighter)
+                .addClass("swiper-slide slide-fighter")
+                .attr({ 'id': data[row].id_fighter, 'style': 'cursor:pointer' })
                 .appendTo('#containerFighters')
                 .html(
                     "<div class='group relative rounded-xl overflow-hidden shadow-xl' style='height:280px;'>" +
@@ -125,8 +132,8 @@ function loadCategories() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_category)
+                .addClass("swiper-slide slide-category")
+                .attr({ 'id': data[row].id_category, 'style': 'cursor:pointer' })
                 .appendTo('#containerCategories')
                 .html(
                     "<div class='group relative rounded-xl overflow-hidden shadow-xl' style='height:200px;'>" +
@@ -164,8 +171,8 @@ function loadCities() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_city)
+                .addClass("swiper-slide slide-city")
+                .attr({ 'id': data[row].id_city, 'style': 'cursor:pointer' })
                 .appendTo('#containerCities')
                 .html(
                     "<div class='group bg-white dark:bg-background-dark border border-slate-200 dark:border-primary/10 rounded-xl overflow-hidden shadow-xl flex' style='height:160px;'>" +
@@ -206,15 +213,19 @@ function loadVenues() {
 
         for (let row = 0; row < data.length; row++) {
             $('<div></div>')
-                .addClass("swiper-slide")
-                .attr('id', data[row].id_venue)
+                .addClass("swiper-slide slide-venue")
+            .attr({
+                'id': data[row].id_venue,
+                'data-city-id': data[row].id_city,
+                'style': 'cursor:pointer'
+            })
                 .appendTo('#containerVenues')
                 .html(
                     "<div class='group relative rounded-xl overflow-hidden shadow-xl' style='height:220px;'>" +
                         "<div class='absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110' style='background-image: url(" + data[row].venue_image + ")'></div>" +
                         "<div class='absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent'></div>" +
                         "<div class='absolute bottom-0 left-0 p-4'>" +
-                            "<span class='text-primary text-xs font-bold uppercase tracking-widest'>" + (data[row].city_name || '') + "</span>" +
+                            "<span class='city-label text-primary text-xs font-bold uppercase tracking-widest'>" + (data[row].city_name || '') + "</span>" +
                             "<h4 class='text-lg font-black text-white'>" + data[row].venue_name + "</h4>" +
                             "<span class='text-slate-300 text-xs'>" + (data[row].capacity ? '🏟️ ' + data[row].capacity + ' capacidad' : '') + "</span>" +
                         "</div>" +
@@ -245,7 +256,7 @@ function clicks(){
     $(document).on("click", '.slide-evento', function(){
         localStorage.setItem('pendingEventDetail', this.getAttribute('id'));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 
@@ -260,7 +271,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 
@@ -272,7 +283,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 
@@ -284,7 +295,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 
@@ -296,7 +307,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 
@@ -304,12 +315,12 @@ function clicks(){
     $(document).on("click", '.slide-venue', function(){
         var filters = [];
         var cityId = this.getAttribute('data-city-id');
-        var cityLabel = $(this).find('.text-primary').text().trim();
+        var cityLabel = $(this).find('.city-label').text().trim();
         filters.push(["cities", [cityId], [cityLabel]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?module=ctrl_shop&op=list';
+            window.location.href = 'index.php?page=shop';
         }, 1000);  
     }); 
 }
