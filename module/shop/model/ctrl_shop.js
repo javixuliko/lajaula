@@ -623,7 +623,7 @@ let mapInstance = null;
 
 function mapBox_all(shop) {
     if (mapInstance) {
-        mapInstance.remove(); // 👈 destruye el mapa anterior
+        mapInstance.remove();
         mapInstance = null;
     }
 
@@ -638,7 +638,9 @@ function mapBox_all(shop) {
         const swiperId = 'map-swiper-' + shop[row].id_event;
 
         const slides = images.map(img =>
-            '<div class="swiper-slide"><img src="' + img + '" style="width:200px; height:110px; object-fit:cover;"/></div>'
+            '<div class="swiper-slide" onclick="loadDetails(' + shop[row].id_event + ')" style="cursor:pointer">' +
+            '<img src="' + img + '" style="width:200px; height:110px; object-fit:cover;"/>' +
+            '</div>'
         ).join('');
 
         const popupHTML =
@@ -653,6 +655,8 @@ function mapBox_all(shop) {
                 '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📅 ' + shop[row].event_date + '</p>' +
                 '<p style="color:#94a3b8; font-size:11px; margin:2px 0;">📍 ' + shop[row].venue_name + ', ' + shop[row].city_name + '</p>' +
                 '<p style="color:#f20d0d; font-weight:900; font-size:15px; margin-top:6px;">Desde ' + shop[row].base_price + '€</p>' +
+                '<button onclick="loadDetails(' + shop[row].id_event + ')" style="margin-top:8px; width:100%; background:#f20d0d; color:white; border:none; border-radius:6px; padding:6px 0; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:0.08em; cursor:pointer;">Ver más</button>' +
+                '</div>';
             '</div>';
 
         const marker = L.marker([shop[row].lat, shop[row].longi])

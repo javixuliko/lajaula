@@ -256,7 +256,7 @@ function clicks(){
     $(document).on("click", '.slide-evento', function(){
         localStorage.setItem('pendingEventDetail', this.getAttribute('id'));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 
@@ -271,7 +271,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 
@@ -283,7 +283,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 
@@ -295,7 +295,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 
@@ -307,7 +307,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 
@@ -320,7 +320,7 @@ function clicks(){
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
         setTimeout(function(){ 
-            window.location.href = 'index.php?page=shop';
+            window.location.href = 'index.php?page=controller_shop&op=list';
         }, 1000);  
     }); 
 }
