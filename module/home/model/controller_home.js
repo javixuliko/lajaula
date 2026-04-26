@@ -255,9 +255,7 @@ function clicks(){
     // Evento
     $(document).on("click", '.slide-evento', function(){
         localStorage.setItem('pendingEventDetail', this.getAttribute('id'));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';
     }); 
 
     // Pelea filtrar por 2 peleadores
@@ -270,9 +268,7 @@ function clicks(){
         filters.push(["fighters", [f1, f2], [l1, l2]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';
     }); 
 
     // Peleador
@@ -282,9 +278,7 @@ function clicks(){
         filters.push(["fighters", [this.getAttribute('id')], [label]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';
     }); 
 
     // Categoría
@@ -294,9 +288,7 @@ function clicks(){
         filters.push(["categories", [this.getAttribute('id')], [label]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';
     }); 
 
     // Ciudad
@@ -306,9 +298,7 @@ function clicks(){
         filters.push(["cities", [this.getAttribute('id')], [label]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';  
     }); 
 
     // Recinto usa la ciudad
@@ -319,9 +309,7 @@ function clicks(){
         filters.push(["cities", [cityId], [cityLabel]]);
         localStorage.removeItem('filter');
         localStorage.setItem('filter', JSON.stringify(filters));
-        setTimeout(function(){ 
-            window.location.href = 'index.php?page=controller_shop&op=list';
-        }, 1000);  
+        window.location.href = 'index.php?page=shop';
     }); 
 }
 
