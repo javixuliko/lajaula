@@ -184,3 +184,62 @@ h1{
     top: 6px !important;
     right: 8px !important;
 }
+
+/* ===== SEARCH BAR ===== */
+.search-bar {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(242, 13, 13, 0.35);
+    border-radius: 12px;
+}
+
+.search-bar select,
+.search-bar input {
+    background: transparent;
+    color: #e2e2e2;
+    font-size: 0.875rem;
+    padding: 8px 12px;
+    outline: none;
+    border: none;
+}
+
+.search-bar select {
+    border-right: 1px solid rgba(242, 13, 13, 0.25);
+    cursor: pointer;
+    min-width: 130px;
+}
+
+.search-bar select option {
+    background: #1a0a0a;
+    color: #e2e2e2;
+}
+
+.search-bar input::placeholder {
+    color: #666;
+}
+
+.search-bar .divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(242, 13, 13, 0.25);
+}
+
+#search_auto {
+    background: #1a0a0a;
+    border: 1px solid rgba(242, 13, 13, 0.35);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 999;
+}
+
+#search_auto .searchElement {
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    color: #e2e2e2;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#search_auto .searchElement:hover {
+    background: rgba(242, 13, 13, 0.15);
+    color: #fff;
+}
