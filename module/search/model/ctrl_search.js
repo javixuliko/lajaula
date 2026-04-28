@@ -1,39 +1,25 @@
-function load_brands() {
-    ajaxPromise('modules/search/crtl/crtl_search.php?op=search_brand', 'POST', 'JSON')
+function load_categories() {
+    ajaxPromise('module/search/ctrl/ctrl_search.php?op=search_category', 'POST', 'JSON')
         .then(function (data) {
-            $('<option>Brand</option>').attr('selected', true).attr('disabled', true).appendTo('.search_brand')
+            $('<option>Categoria</option>').attr('selected', true).attr('disabled', true).appendTo('.search_category')
             for (row in data) {
-                $('<option value="' + data[row].id_brand + '">' + data[row].brand_name + '</option>').appendTo('.search_brand')
+                $('<option value="' + data[row].id_category + '">' + data[row].cat_name + '</option>').appendTo('.search_category')
             }
         }).catch(function () {
             window.location.href = "index.php?modules=exception&op=503&error=fail_load_brands&type=503";
         });
 }
 
-function load_category(brand) {
-    $('.search_category').empty();
-
-    if (brand == undefined) {
-        ajaxPromise('modules/search/crtl/crtl_search.php?op=search_category_null', 'POST', 'JSON')
-            .then(function (data) {
-                $('<option>Category</option>').attr('selected', true).attr('disabled', true).appendTo('.search_category')
-                for (row in data) {
-                    $('<option value="' + data[row].id_categoria + '">' + data[row].cat_name + '</option>').appendTo('.search_category')
-                }
-            }).catch(function () {
-                window.location.href = "index.php?modules=exception&op=503&error=fail_load_category&type=503";
-            });
-    }
-    else {
-        ajaxPromise('modules/search/crtl/crtl_search.php?op=search_category', 'POST', 'JSON', brand)
+function load_fighters(category) {
+    $('.search_fighter').empty();
+        ajaxPromise('module/search/ctrl/ctrl_search.php?op=search_fighter', 'POST', 'JSON', category)
             .then(function (data) {
                 for (row in data) {
-                    $('<option value="' + data[row].id_categoria + '">' + data[row].cat_name + '</option>').appendTo('.search_category')
+                    $('<option value="' + data[row].id_fighter + '">' + data[row].fighter_name + '</option>').appendTo('.search_fighter')
                 }
             }).catch(function () {
                 window.location.href = "index.php?modules=exception&op=503&error=fail_loas_category_2&type=503";
             });
-    }
 }
 
 function launch_search() {

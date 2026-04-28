@@ -97,15 +97,4 @@ class DAO_search {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    function select_city($complete){
-        $like = $complete . '%';
-        $conexion = connect::con();
-        $stmt = $conexion->prepare("SELECT *
-            FROM car c
-            WHERE c.city LIKE :complete");
-        $stmt->bindParam(':complete', $like);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 }
