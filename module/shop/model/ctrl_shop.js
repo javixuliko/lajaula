@@ -86,7 +86,7 @@ function ajaxForSearch(url, filter) {
                     });
                 }
             }, 50);
-            mapBox_all(data);
+            leafLet_all(data);
         }).catch(function() {
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Function ajxForSearch SHOP";
             console.log("error");
@@ -295,7 +295,7 @@ function loadDetails(id_event) {
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
             data[0].images = data[1].map(img => img.image_url);
-            mapBox(data[0]);
+            leafLet(data[0]);
         }, 50);
     }).catch(function() {
         // window.location.href = "...";
@@ -621,7 +621,7 @@ function filter_button() {
 
 let mapInstance = null;
 
-function mapBox_all(shop) {
+function leafLet_all(shop) {
     if (mapInstance) {
         mapInstance.remove();
         mapInstance = null;
@@ -679,7 +679,7 @@ function mapBox_all(shop) {
 
 let mapDetailInstance = null;
 
-function mapBox(id) {
+function leafLet(id) {
     if (mapDetailInstance) {
         mapDetailInstance.remove();
         mapDetailInstance = null;
