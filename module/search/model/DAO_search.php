@@ -15,6 +15,17 @@ class DAO_search {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    function search_all_fighters() {
+        $conexion = connect::con();
+        $stmt = $conexion->prepare(
+            "SELECT id_fighter, fighter_name 
+            FROM fighters 
+            ORDER BY fighter_name ASC"
+        );
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     function search_fighters_by_category($category) {
         $conexion = connect::con();
         $stmt = $conexion->prepare(

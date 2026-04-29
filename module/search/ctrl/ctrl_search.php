@@ -14,6 +14,16 @@ switch ($_GET['op']) {
         }
         break;
 
+    case 'search_all_fighters':
+        $homeQuery = new DAO_search();
+        $selSlide = $homeQuery->search_all_fighters();
+        if (!empty($selSlide)) {
+            echo json_encode($selSlide);
+        } else {
+            echo "error";
+        }
+        break;
+
     case 'search_fighters';
         $homeQuery = new DAO_search();
         $selSlide = $homeQuery -> search_fighters_by_category($_POST['category']);        
