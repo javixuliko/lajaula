@@ -100,15 +100,34 @@ function button_search() {
         if (fighter !== null && fighter !== 'Peleador') {
             search.push(["fighters", [fighter], [fighterLabel]]);
         }
-        if (city !== '') {
-            search.push(["cities", [cityId], [city]]);
-        }
 
-        localStorage.removeItem('filter');
-        if (search.length != 0) {
+        if (city === '') {
+            localStorage.removeItem('filter');
+            if (search.length != 0) localStorage.setItem('filter', JSON.stringify(search));
+            window.location.href = 'index.php?page=shop';
+
+        } else if (cityId !== '') {
+            search.push(["cities", [cityId], [city]]);
+            localStorage.removeItem('filter');
             localStorage.setItem('filter', JSON.stringify(search));
+            window.location.href = 'index.php?page=shop';
+
+        } else {
+            ajaxPromise('module/search/ctrl/ctrl_search.php?op=autocomplete', 'POST', 'JSON', { complete: city })
+                .then(function (data) {
+                    var match = Array.isArray(data) ? data.find(i => i.city_name.toLowerCase() === city.toLowerCase()) : null;
+                    search.push(["cities", [match ? match.id_city : 0], [city]]);
+                    localStorage.removeItem('filter');
+                    localStorage.setItem('filter', JSON.stringify(search));
+                    window.location.href = 'index.php?page=shop';
+                })
+                .catch(function () {
+                    search.push(["cities", [0], [city]]);
+                    localStorage.removeItem('filter');
+                    localStorage.setItem('filter', JSON.stringify(search));
+                    window.location.href = 'index.php?page=shop';
+                });
         }
-        window.location.href = 'index.php?page=shop';
     });
 }
 
