@@ -3,7 +3,25 @@ $path = $_SERVER['DOCUMENT_ROOT'] . '/lajaulav12/';
 include($path . "model/connect.php");
 
 class DAOShop{
-    function select_all_eventos() {
+    function select_all_eventos($limit, $offset) {
+        $conexion = connect::con();
+
+        $sqlCount = "SELECT COUNT(DISTINCT e.id_event) AS total
+                 FROM events e
+                 LEFT JOIN cities c ON e.id_city = c.id_city
+                 LEFT JOIN venues v ON e.id_venue = v.id_venue
+                 LEFT JOIN organizations o ON e.id_organization = o.id_organization
+                 LEFT JOIN events_images ei ON e.id_event = ei.id_event
+                 LEFT JOIN event_categories ec ON e.id_event = ec.id_event
+                 LEFT JOIN categories cat ON ec.id_category = cat.id_category
+                 LEFT JOIN event_fighters ef ON e.id_event = ef.id_event
+                 LEFT JOIN fighters f ON ef.id_fighter = f.id_fighter
+                 WHERE e.status = 'activo'";
+
+        $stmtCount = $conexion->prepare($sqlCount);
+        $stmtCount->execute();
+        $total = (int) $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
+
         $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.lat, v.longi, o.org_name, o.org_logo,
                     CONCAT('[\"', GROUP_CONCAT(DISTINCT ei.image_url SEPARATOR '\",\"'), '\"]') AS images,
                     GROUP_CONCAT(DISTINCT cat.cat_name SEPARATOR ',') AS categories
@@ -17,10 +35,12 @@ class DAOShop{
                 LEFT JOIN event_fighters ef ON e.id_event = ef.id_event
                 LEFT JOIN fighters f ON ef.id_fighter = f.id_fighter
                 WHERE e.status = 'activo'
-                GROUP BY e.id_event ORDER BY e.event_date ASC";
+                GROUP BY e.id_event ORDER BY e.event_date ASC
+                LIMIT :limit OFFSET :offset";
 
-        $conexion = connect::con();
         $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -31,10 +51,28 @@ class DAOShop{
         }, $rows);
 
         connect::close($conexion);
-        return $result;
+
+        return [
+            'eventos' => $result,
+            'total'   => $total
+        ];
     }
 
-    function filter($filter) {
+    function filter($filter, $limit, $offset) {
+        $conexion = connect::con();
+
+        $sqlCount = "SELECT COUNT(DISTINCT e.id_event) AS total
+                 FROM events e
+                 LEFT JOIN cities c ON e.id_city = c.id_city
+                 LEFT JOIN venues v ON e.id_venue = v.id_venue
+                 LEFT JOIN organizations o ON e.id_organization = o.id_organization
+                 LEFT JOIN events_images ei ON e.id_event = ei.id_event
+                 LEFT JOIN event_categories ec ON e.id_event = ec.id_event
+                 LEFT JOIN categories cat ON ec.id_category = cat.id_category
+                 LEFT JOIN event_fighters ef ON e.id_event = ef.id_event
+                 LEFT JOIN fighters f ON ef.id_fighter = f.id_fighter
+                 WHERE e.status = 'activo'";
+
         $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.lat, v.longi, o.org_name, o.org_logo,
                     CONCAT('[\"', GROUP_CONCAT(DISTINCT ei.image_url SEPARATOR '\",\"'), '\"]') AS images,
                     GROUP_CONCAT(DISTINCT cat.cat_name SEPARATOR ',') AS categories
@@ -66,6 +104,7 @@ class DAOShop{
             if ($tabla === 'price_max') {
                 $placeholder = ":param{$i}";
                 $sql .= " AND CAST(e.base_price AS UNSIGNED) <= $placeholder";
+                $sqlCount .= " AND CAST(e.base_price AS UNSIGNED) <= $placeholder";
                 $params[$placeholder] = intval($valor);
                 continue;
             }
@@ -84,21 +123,32 @@ class DAOShop{
                     }
 
                     $sql .= " AND $columna IN (" . implode(',', $placeholders) . ")";
+                    $sqlCount .= " AND $columna IN (" . implode(',', $placeholders) . ")";
                 }
             }
 
             else {
                 $placeholder = ":param{$i}";
                 $sql .= " AND $columna = $placeholder";
+                $sqlCount .= " AND $columna = $placeholder";
                 $params[$placeholder] = intval($valor);
             }
         }
 
-        $sql .= " GROUP BY e.id_event ORDER BY e.event_date ASC";
+        $stmtCount = $conexion->prepare($sqlCount);
+        $stmtCount->execute($params);
+        $total = (int) $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
 
-        $conexion = connect::con();
+        $sql .= " GROUP BY e.id_event ORDER BY e.event_date ASC LIMIT :limit OFFSET :offset";
+
         $stmt = $conexion->prepare($sql);
-        $stmt->execute($params);
+        $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Convertir el JSON string en array PHP
@@ -108,7 +158,10 @@ class DAOShop{
         }, $rows);
 
         connect::close($conexion);
-        return $result;
+        return [
+            'eventos' => $result,
+            'total'   => $total
+        ];
         //return $sql;
     }
 

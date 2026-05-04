@@ -9,8 +9,11 @@ switch ($_GET['op']) {
 
     case 'all_eventos':
         try {
+            $limit  = (int) $_POST['limit'];
+            $page   = (int) $_POST['page'];
+            $offset = $limit * ($page - 1);
             $daoshop = new DAOShop();
-            $Dates_Eventos = $daoshop->select_all_eventos();
+            $Dates_Eventos = $daoshop->select_all_eventos($limit, $offset);
         } catch (Exception $e) {
             echo json_encode("error");
             exit;
@@ -25,8 +28,11 @@ switch ($_GET['op']) {
 
     case 'filter':
         try {
+            $limit  = (int) $_POST['limit'];
+            $page   = (int) $_POST['page'];
+            $offset = $limit * ($page - 1);
             $daoshop = new DAOShop();
-            $Dates_Eventos = $daoshop->filter($_POST['filter']);
+            $Dates_Eventos = $daoshop->filter($_POST['filter'], $limit, $offset);
         } catch (Exception $e) {
             echo json_encode("error");
             exit;

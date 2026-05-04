@@ -243,3 +243,28 @@ h1{
     background: rgba(242, 13, 13, 0.15);
     color: #fff;
 }
+
+.pagination-btn {
+    background: transparent;
+    border: 1px solid rgba(242, 13, 13, 0.3);
+    color: #94a3b8;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pagination-btn:hover {
+    background: rgba(242, 13, 13, 0.1);
+    border-color: rgba(242, 13, 13, 0.6);
+    color: white;
+}
+
+.pagination-btn.active {
+    background: #f20d0d;
+    border-color: #f20d0d;
+    color: white;
+}

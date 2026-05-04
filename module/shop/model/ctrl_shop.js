@@ -1,3 +1,5 @@
+var currentPage = 1;
+var limitPerPage = 6;
 function loadEventos() {
     $('#section-hero').show();
     $('#section-main').show();
@@ -22,7 +24,7 @@ function loadEventos() {
 }
 
 function ajaxForSearch(url, filter) {
-    ajaxPromise(url, 'POST', 'JSON', { 'filter': filter })
+    ajaxPromise(url, 'POST', 'JSON', { 'filter': filter , 'page': currentPage, 'limit': limitPerPage})
         .then(function(data) {
             console.log(data);
             $('#content_shop_eventos').empty();
@@ -30,12 +32,12 @@ function ajaxForSearch(url, filter) {
             $('.date_img').empty();
             $('.date_evento_dentro').empty();
 
-            if (data == "error") {
+            if (data === "error" || !data.eventos) {
                 $('<div></div>').appendTo('#content_shop_eventos')
                     .html('<h3>¡No se encuentran resultados con los filtros aplicados!</h3>')
             } else {
-                for (row in data) {
-                    const { id_event, images, org_name, event_name, event_date, venue_name, city_name, base_price } = data[row];
+                for (row in data.eventos) {
+                    const { id_event, images, org_name, event_name, event_date, venue_name, city_name, base_price } = data.eventos[row];
                     const swiperId = `swiper-event-${id_event}`;
                     
                     $('<div></div>').attr({ 'id': id_event, 'class': 'list_content_shop' }).appendTo('#content_shop_eventos')
@@ -70,8 +72,8 @@ function ajaxForSearch(url, filter) {
                 }
             }
             setTimeout(function() {
-                for (row in data) {
-                    const { id_event } = data[row];
+                for (row in data.eventos) {
+                    const { id_event } = data.eventos[row];
                     const swiperId = `swiper-event-${id_event}`;
                     new Swiper(`.${swiperId}`, {
                         loop: true,
@@ -86,11 +88,38 @@ function ajaxForSearch(url, filter) {
                     });
                 }
             }, 50);
-            leafLet_all(data);
+            leafLet_all(data.eventos);
+            renderPagination(data.total);
         }).catch(function() {
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Function ajxForSearch SHOP";
             console.log("error");
         });
+}
+
+function renderPagination(total) {
+    var numPages = Math.ceil(total / limitPerPage);
+    $('#pagination').empty();
+
+    for (var i = 1; i <= numPages; i++) {
+        var btn = $('<button></button>')
+            .text(i)
+            .addClass('pagination-btn')
+            .on('click', function() {
+                currentPage = parseInt($(this).text());
+                var filtro = JSON.parse(localStorage.getItem('filter'));
+                if (filtro && filtro.length > 0) {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=filter", filtro);
+                } else {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=all_eventos");
+                }
+            });
+
+        if (i === currentPage) {
+            btn.addClass('active');
+        }
+
+        $('#pagination').append(btn);
+    }
 }
 
 function clicks() {
@@ -467,6 +496,7 @@ function attachFilterListeners() {
 }
 
 function applyFiltersNow() {
+    currentPage = 1;
     var filter = [];
     var processed = {};
 
@@ -570,6 +600,7 @@ function renderActiveChips(filter) {
 }
 
 function removeOneFilter(name, val) {
+    currentPage = 1;
     var filter = JSON.parse(localStorage.getItem('filter')) || [];
 
     filter = filter.map(function(f) {
@@ -600,6 +631,7 @@ function removeOneFilter(name, val) {
 
 function filter_button() {
     $(document).on('click', '.filter_remove, #clear-all-filters', function () {
+        currentPage = 1;
         localStorage.removeItem('filter');
         renderActiveChips([]);
         $('.filter_input[type="checkbox"], .filter_input[type="radio"]').prop('checked', false);
