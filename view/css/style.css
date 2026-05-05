@@ -268,3 +268,14 @@ h1{
     border-color: #f20d0d;
     color: white;
 }
+
+.pagination-arrow {
+    background: transparent;
+    border-color: rgba(242, 13, 13, 0.3);
+    color: #f20d0d;
+}
+
+.pagination-arrow:hover {
+    background: #f20d0d;
+    color: white;
+}

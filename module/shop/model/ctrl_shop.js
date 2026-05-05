@@ -89,16 +89,34 @@ function ajaxForSearch(url, filter) {
                 }
             }, 50);
             leafLet_all(data.eventos);
-            renderPagination(data.total);
+            Pagination(data.total);
         }).catch(function() {
             //window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Function ajxForSearch SHOP";
             console.log("error");
         });
 }
 
-function renderPagination(total) {
+function Pagination(total) {
     var numPages = Math.ceil(total / limitPerPage);
     $('#pagination').empty();
+
+    if (total <= limitPerPage) return;
+
+    if (currentPage > 1) {
+        var prevBtn = $('<button></button>')
+            .html('&#8592;')
+            .addClass('pagination-btn pagination-arrow')
+            .on('click', function() {
+                currentPage--;
+                var filtro = JSON.parse(localStorage.getItem('filter'));
+                if (filtro && filtro.length > 0) {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=filter", filtro);
+                } else {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=all_eventos");
+                }
+            });
+        $('#pagination').append(prevBtn);
+    }
 
     for (var i = 1; i <= numPages; i++) {
         var btn = $('<button></button>')
@@ -119,6 +137,22 @@ function renderPagination(total) {
         }
 
         $('#pagination').append(btn);
+    }
+
+    if (currentPage < numPages) {
+        var nextBtn = $('<button></button>')
+            .html('&#8594;')
+            .addClass('pagination-btn pagination-arrow')
+            .on('click', function() {
+                currentPage++;
+                var filtro = JSON.parse(localStorage.getItem('filter'));
+                if (filtro && filtro.length > 0) {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=filter", filtro);
+                } else {
+                    ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=all_eventos");
+                }
+            });
+        $('#pagination').append(nextBtn);
     }
 }
 
