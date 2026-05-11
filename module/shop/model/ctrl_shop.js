@@ -190,7 +190,11 @@ function loadDetails(id_event) {
 
         $('.date_evento').empty();
 
-        const { org_name, event_name, event_date, venue_name, city_name, country, tickets_available, main_event, description, base_price } = data[0];
+        const { org_name, event_name, event_date, venue_name, city_name, country,
+        tickets_available, main_event, description, base_price, categories } = data[0];
+
+
+
 
         // Insertar imágenes en el Swiper
         for (row in data[1]) {
@@ -337,6 +341,11 @@ function loadDetails(id_event) {
         $('#section-hero').hide();
         $('#section-main').hide();
         $('#details-shop').show();
+
+        if (categories) {
+            var firstCategory = categories.split(',')[0].trim();
+            more_events_related(firstCategory, id_event);
+        }
 
         setTimeout(() => {
             new Swiper('.swiper-details', {
@@ -800,6 +809,91 @@ function leafLet(id) {
             });
         }, 50);
     });
+}
+
+function more_events_related(category, current_id) {
+    var items = 0;
+
+    ajaxPromise('module/shop/ctrl/ctrl_shop.php?op=count_events_related', 'POST', 'JSON', { 'category': category, 'current_id': current_id})
+        .then(function(data) {
+            var total_items = data.n_prod;
+
+            events_related(0, category, total_items, current_id);
+
+            $(document).off('click.related').on('click.related', '.load_more_events_btn', function() {
+                items = items + 3;
+                events_related(items, category, total_items, current_id);
+            });
+        }).catch(function() {
+            console.log('error count_events_related');
+        });
+}
+
+function events_related(loaded, category, total_items, current_id) {
+    var items_per_load = 3;
+
+    ajaxPromise("module/shop/ctrl/ctrl_shop.php?op=events_related", 'POST', 'JSON',
+        { 'category': category, 'loaded': loaded, 'items': items_per_load, 'current_id': current_id })
+        .then(function(data) {
+
+            if (loaded === 0) {
+                $('.date_evento').append(`
+                    <section class="max-w-7xl mx-auto px-6 pb-20">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="material-symbols-outlined text-primary">local_fire_department</span>
+                            <h3 class="text-2xl font-black text-white uppercase italic tracking-tighter">
+                                Eventos Relacionados
+                                <span class="text-primary italic text-base font-bold ml-2">${category}</span>
+                            </h3>
+                        </div>
+                        <div id="related-events-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                        <div id="related-load-more" class="mt-6 flex justify-center"></div>
+                    </section>
+                `);
+            }
+
+            data.forEach(function(ev) {
+                $('#related-events-grid').append(`
+                    <div class="bg-neutral-900 border border-primary/10 rounded-xl overflow-hidden 
+                                hover:border-primary/40 transition-all cursor-pointer group"
+                         onclick="loadDetails(${ev.id_event})">
+                        <img src="${ev.image_url}" class="w-full object-cover" style="height:160px"/>
+                        <div class="p-4 space-y-2">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-primary">
+                                ${ev.org_name}
+                            </span>
+                            <h4 class="text-white font-black text-sm uppercase italic leading-tight">
+                                ${ev.event_name}
+                            </h4>
+                            <p class="text-slate-400 text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-xs">calendar_month</span>
+                                ${ev.event_date}
+                            </p>
+                            <p class="text-slate-400 text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-primary text-xs">location_on</span>
+                                ${ev.venue_name}, ${ev.city_name}
+                            </p>
+                            <p class="text-primary font-black text-lg pt-1">${ev.base_price}€</p>
+                        </div>
+                    </div>
+                `);
+            });
+
+            var total_loaded = loaded + data.length;
+            $('#related-load-more').empty();
+
+            if (total_loaded < total_items) {
+                $('#related-load-more').html(`
+                    <button class="load_more_events_btn bg-primary hover:bg-red-700 text-white 
+                                   font-black uppercase tracking-widest px-8 py-3 rounded-xl 
+                                   text-sm transition-all">
+                        Ver más eventos
+                    </button>
+                `);
+            }
+        }).catch(function() {
+            console.log('error events_related');
+        });
 }
 
 

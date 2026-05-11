@@ -188,12 +188,16 @@ class DAOShop{
 
 	function select_one_evento($id) {
         $sql = "SELECT e.*, c.city_name, c.country, v.venue_name, v.address, v.capacity, v.lat, v.longi,
-                       o.org_name, o.org_logo
+                    o.org_name, o.org_logo,
+                    GROUP_CONCAT(DISTINCT cat.cat_name SEPARATOR ',') AS categories
                 FROM events e
                 LEFT JOIN cities c ON e.id_city = c.id_city
                 LEFT JOIN venues v ON e.id_venue = v.id_venue
                 LEFT JOIN organizations o ON e.id_organization = o.id_organization
-                WHERE e.id_event = :id";
+                LEFT JOIN event_categories ec ON e.id_event = ec.id_event
+                LEFT JOIN categories cat ON ec.id_category = cat.id_category
+                WHERE e.id_event = :id
+                GROUP BY e.id_event";
 
         $conexion = connect::con();
         $stmt = $conexion->prepare($sql);
@@ -227,6 +231,55 @@ class DAOShop{
         $conexion = connect::con();
         $stmt = $conexion->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        connect::close($conexion);
+        return $res;
+    }
+
+    function count_events_related($category, $current_id) {
+        $sql = "SELECT COUNT(DISTINCT e.id_event) AS n_prod
+                FROM events e
+                INNER JOIN event_categories ec ON e.id_event = ec.id_event
+                INNER JOIN categories cat ON ec.id_category = cat.id_category
+                WHERE cat.cat_name = :category
+                AND e.status = 'activo'
+                AND e.id_event != :current_id";
+
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':category',   $category,   PDO::PARAM_STR);
+        $stmt->bindValue(':current_id', $current_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        connect::close($conexion);
+        return $res;
+    }
+
+    function select_events_related($category, $loaded, $items, $current_id) {
+        $sql = "SELECT e.id_event, e.event_name, e.event_date, e.base_price,
+                    c.city_name, v.venue_name, o.org_name,
+                    (SELECT image_url FROM events_images 
+                        WHERE id_event = e.id_event LIMIT 1) AS image_url
+                FROM events e
+                INNER JOIN event_categories ec ON e.id_event = ec.id_event
+                INNER JOIN categories cat ON ec.id_category = cat.id_category
+                LEFT JOIN cities c ON e.id_city = c.id_city
+                LEFT JOIN venues v ON e.id_venue = v.id_venue
+                LEFT JOIN organizations o ON e.id_organization = o.id_organization
+                WHERE cat.cat_name = :category
+                AND e.status = 'activo'
+                AND e.id_event != :current_id
+                GROUP BY e.id_event
+                ORDER BY e.event_date ASC
+                LIMIT :loaded, :items";
+
+        $conexion = connect::con();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':category',   $category,   PDO::PARAM_STR);
+        $stmt->bindValue(':current_id', $current_id, PDO::PARAM_INT);
+        $stmt->bindValue(':loaded',     $loaded,     PDO::PARAM_INT);
+        $stmt->bindValue(':items',      $items,      PDO::PARAM_INT);
         $stmt->execute();
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         connect::close($conexion);

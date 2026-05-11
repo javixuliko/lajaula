@@ -79,6 +79,44 @@ switch ($_GET['op']) {
             echo json_encode("error");
         }
         break;
+    
+    case 'count_events_related':
+        $category = $_POST['category'];
+        $current_id = (int) $_POST['current_id'];
+        try {
+            $dao = new DAOShop();
+            $rdo = $dao->count_events_related($category, $current_id);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (!$rdo) {
+            echo json_encode("error");
+            exit;
+        } else {
+            echo json_encode($rdo);
+        }
+        break;
+
+    case 'events_related':
+        $category  = $_POST['category'];
+        $loaded    = (int) $_POST['loaded'];
+        $items     = (int) $_POST['items'];
+        $current_id = (int) $_POST['current_id'];
+        try {
+            $dao = new DAOShop();
+            $rdo = $dao->select_events_related($category, $loaded, $items, $current_id);
+        } catch (Exception $e) {
+            echo json_encode("error");
+            exit;
+        }
+        if (!$rdo) {
+            echo json_encode("error");
+            exit;
+        } else {
+            echo json_encode($rdo);
+        }
+        break;
 
     default :
         include("module/exceptions/views/pages/error404.php");
