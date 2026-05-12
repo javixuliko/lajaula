@@ -84,4 +84,23 @@ class DAOHome
 		return $res;
 	}
 
+	function select_most_visited($limit = 6) {
+		$conexion = connect::con();
+		$sql = "SELECT e.id_event, e.event_name, e.event_date, e.base_price, e.visits,
+					c.city_name, v.venue_name, o.org_name,
+					(SELECT image_url FROM events_images WHERE id_event = e.id_event LIMIT 1) AS image_url
+				FROM events e
+				LEFT JOIN cities c ON e.id_city = c.id_city
+				LEFT JOIN venues v ON e.id_venue = v.id_venue
+				LEFT JOIN organizations o ON e.id_organization = o.id_organization
+				WHERE e.status = 'activo'
+				ORDER BY e.visits DESC
+				LIMIT :limit";
+		$stmt = $conexion->prepare($sql);
+		$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+		$stmt->execute();
+		$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		connect::close($conexion);
+		return $res;
+	}
 }

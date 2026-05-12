@@ -95,6 +95,7 @@ class DAOShop{
         ];
 
         $orderMap = [
+            'visits_desc' => 'e.visits DESC',
             'date_asc'   => 'e.event_date ASC',
             'date_desc'  => 'e.event_date DESC',
             'price_asc'  => 'CAST(e.base_price AS UNSIGNED) ASC',
@@ -299,5 +300,38 @@ class DAOShop{
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         connect::close($conexion);
         return $res;
+    }
+
+    function increment_visits($id) {
+        $conexion = connect::con();
+        $stmt = $conexion->prepare("UPDATE events SET visits = visits + 1 WHERE id_event = :id");
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        connect::close($conexion);
+    }
+
+    function select_most_visited($limit = 6) {
+        $conexion = connect::con();
+        $sql = "SELECT e.*, c.city_name, v.venue_name, o.org_name,
+                    CONCAT('[\"', GROUP_CONCAT(DISTINCT ei.image_url SEPARATOR '\",\"'), '\"]') AS images
+                FROM events e
+                LEFT JOIN cities c ON e.id_city = c.id_city
+                LEFT JOIN venues v ON e.id_venue = v.id_venue
+                LEFT JOIN organizations o ON e.id_organization = o.id_organization
+                LEFT JOIN events_images ei ON e.id_event = ei.id_event
+                WHERE e.status = 'activo'
+                GROUP BY e.id_event
+                ORDER BY e.visits DESC
+                LIMIT :limit";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = array_map(function($row) {
+            $row['images'] = json_decode($row['images'], true);
+            return $row;
+        }, $rows);
+        connect::close($conexion);
+        return $result;
     }
 }

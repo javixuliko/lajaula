@@ -134,6 +134,16 @@ switch ($_GET['op']) {
         }
         break;
 
+    case 'homePageMostVisited':
+        try {
+            $daohome = new DAOHome();
+            $data = $daohome->select_most_visited(6);
+        } catch(Exception $e) {
+            echo json_encode("error"); exit;
+        }
+        echo !empty($data) ? json_encode($data) : json_encode("error");
+        break;
+
     default:
         include("view/inc/error404.php");
         break;

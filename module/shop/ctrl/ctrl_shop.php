@@ -118,6 +118,18 @@ switch ($_GET['op']) {
         }
         break;
 
+    case 'increment_visits':
+        $id = (int) $_POST['id'];
+        $dao = new DAOShop();
+        $dao->increment_visits($id);
+        echo json_encode("ok");
+        break;
+
+    case 'most_visited':
+        $dao = new DAOShop();
+        echo json_encode($dao->select_most_visited(6));
+        break;
+
     default :
         include("module/exceptions/views/pages/error404.php");
         break;

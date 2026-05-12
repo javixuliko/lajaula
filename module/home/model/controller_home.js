@@ -313,6 +313,53 @@ function clicks(){
     }); 
 }
 
+function loadMostVisited() {
+    ajaxPromise('module/home/controller/controller_home.php?op=homePageMostVisited', 'GET', 'JSON')
+    .then(function(data) {
+        if (data === 'error') return;
+        data.forEach(function(ev) {
+            $('<div></div>')
+                .addClass('swiper-slide slide-evento')
+                .attr('id', ev.id_event)
+                .appendTo('#containerMostVisited')
+                .html(`
+                    <div class='group relative rounded-xl overflow-hidden shadow-xl cursor-pointer' style='height:280px'>
+                        <div class='absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110'
+                             style='background-image:url(${ev.image_url})'></div>
+                        <div class='absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent'></div>
+                        <div class='absolute bottom-0 left-0 p-4 w-full'>
+                            <span class='text-primary text-xs font-black uppercase tracking-widest'>${ev.org_name}</span>
+                            <h4 class='text-white font-black text-sm uppercase italic leading-tight'>${ev.event_name}</h4>
+                            <p class='text-slate-400 text-xs mt-1'>📅 ${ev.event_date}</p>
+                            <p class='text-slate-400 text-xs'>📍 ${ev.venue_name}, ${ev.city_name}</p>
+                            <p class='text-primary font-black text-lg mt-1'>${ev.base_price}€</p>
+                        </div>
+                        <div class='absolute top-3 right-3 bg-black/60 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1'>
+                            🔥 ${ev.visits}
+                        </div>
+                    </div>
+                `);
+        });
+
+        new Swiper('.swiper-most-visited', {
+            loop: true,
+            autoplay: { delay: 4000 },
+            slidesPerView: 3,
+            spaceBetween: 24,
+            pagination: { el: '.swiper-most-visited .swiper-pagination', clickable: true },
+            navigation: {
+                nextEl: '.swiper-most-visited .swiper-button-next',
+                prevEl: '.swiper-most-visited .swiper-button-prev',
+            },
+            breakpoints: {
+                0:    { slidesPerView: 1 },
+                768:  { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+            }
+        });
+    });
+}
+
 $(document).ready(function () {
     //console.log('controller_home.js loaded');
 
@@ -323,4 +370,5 @@ $(document).ready(function () {
     loadCities();
     loadVenues();
     clicks();
+    loadMostVisited();
 });

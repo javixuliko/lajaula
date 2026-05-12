@@ -166,6 +166,8 @@ function clicks() {
 var swiperInstance = null;
 
 function loadDetails(id_event) {
+    ajaxPromise('module/shop/ctrl/ctrl_shop.php?op=increment_visits', 'POST', 'JSON', { id: id_event });
+
     ajaxPromise(`module/shop/ctrl/ctrl_shop.php?op=details_eventos&id=${id_event}`, 'GET', 'JSON')
     .then(function(data) {
 
@@ -474,6 +476,7 @@ function renderFilters(filters, values) {
         <select class="order_input w-full bg-background-dark border border-primary/20 rounded-lg p-2 text-sm text-slate-100 focus:border-primary outline-none"
                 id="order_by_select">
             <option value="">-- Ordenar por --</option>
+            <option value="visits_desc">Más visitados</option>
             <option value="date_asc">Fecha (más próximo)</option>
             <option value="date_desc">Fecha (más lejano)</option>
             <option value="price_asc">Precio (menor a mayor)</option>
