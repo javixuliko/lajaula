@@ -468,6 +468,19 @@ function renderFilters(filters, values) {
         }
     });
 
+    html += `
+    <div class="space-y-2">
+        <p class="text-slate-300 text-xs uppercase font-bold">Ordenar por</p>
+        <select class="order_input w-full bg-background-dark border border-primary/20 rounded-lg p-2 text-sm text-slate-100 focus:border-primary outline-none"
+                id="order_by_select">
+            <option value="">-- Ordenar por --</option>
+            <option value="date_asc">Fecha (más próximo)</option>
+            <option value="date_desc">Fecha (más lejano)</option>
+            <option value="price_asc">Precio (menor a mayor)</option>
+            <option value="price_desc">Precio (mayor a menor)</option>
+        </select>
+    </div>`;
+
     $(".div-filters").html(html + `
         <button class="filter_remove w-full border border-primary/30 text-primary hover:bg-primary/10 py-2 rounded-lg text-xs font-bold uppercase transition-all">Limpiar</button>
     `);
@@ -507,6 +520,10 @@ function restoreAllFilters() {
             inputs.val(valor);
             $(".price_value").text(valor + "€");
         }
+
+        if (name === 'order_by') {
+            $('#order_by_select').val(valor);
+        }
     });
 }
 
@@ -534,6 +551,10 @@ function attachFilterListeners() {
     });
 
     $(document).on("change", "select.filter_input", function () {
+        applyFiltersNow();
+    });
+    
+    $(document).on("change", "#order_by_select", function () {
         applyFiltersNow();
     });
 }
@@ -578,6 +599,11 @@ function applyFiltersNow() {
         }
     });
 
+    var orderVal = $('#order_by_select').val();
+    if (orderVal) {
+        filter.push(['order_by', orderVal]);
+    }
+
     localStorage.setItem('filter', JSON.stringify(filter));
     renderActiveChips(filter);
 
@@ -597,7 +623,8 @@ function renderActiveChips(filter) {
         fighters: 'Luchador',
         categories: 'Categoría',
         cities: 'Ciudad',
-        price_max: 'Precio máx'
+        price_max: 'Precio máx',
+        order_by:  'Orden'
     };
 
     if (!filter || filter.length === 0) {
@@ -682,6 +709,7 @@ function filter_button() {
         $('select.filter_input').val('');
         $('input[type="range"].filter_input').val(500);
         $('.price_value').text('500€');
+        $('#order_by_select').val('');
         ajaxForSearch("module/shop/ctrl/ctrl_shop.php?op=all_eventos");
     });
 }

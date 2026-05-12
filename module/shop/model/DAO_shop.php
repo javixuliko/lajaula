@@ -94,10 +94,25 @@ class DAOShop{
             'price_max'  => 'e.base_price',
         ];
 
+        $orderMap = [
+            'date_asc'   => 'e.event_date ASC',
+            'date_desc'  => 'e.event_date DESC',
+            'price_asc'  => 'CAST(e.base_price AS UNSIGNED) ASC',
+            'price_desc' => 'CAST(e.base_price AS UNSIGNED) DESC',
+        ];
+        $orderBy = 'e.event_date ASC';
+
         $params = [];
         foreach ($filter as $i => $f) {
             $tabla = $f[0];
             $valor = $f[1];
+
+            if ($tabla === 'order_by') {
+                if (isset($orderMap[$valor])) {
+                    $orderBy = $orderMap[$valor];
+                }
+                continue;
+            }
 
             if (!isset($tableMap[$tabla])) continue;
 
@@ -139,7 +154,7 @@ class DAOShop{
         $stmtCount->execute($params);
         $total = (int) $stmtCount->fetch(PDO::FETCH_ASSOC)['total'];
 
-        $sql .= " GROUP BY e.id_event ORDER BY e.event_date ASC LIMIT :limit OFFSET :offset";
+        $sql .= " GROUP BY e.id_event ORDER BY {$orderBy} LIMIT :limit OFFSET :offset";
 
         $stmt = $conexion->prepare($sql);
         $stmt->bindValue(':limit',  $limit,  PDO::PARAM_INT);
