@@ -601,7 +601,8 @@ function applyFiltersNow() {
 
     var orderVal = $('#order_by_select').val();
     if (orderVal) {
-        filter.push(['order_by', orderVal]);
+        var orderLabel = $('#order_by_select option:selected').text();
+        filter.push(['order_by', orderVal, orderLabel]);
     }
 
     localStorage.setItem('filter', JSON.stringify(filter));
@@ -690,6 +691,7 @@ function removeOneFilter(name, val) {
     input.siblings('.checkmark, .dot').addClass('hidden');
     const selectInput = $(`.filter_input[data-filter="${name}"]`);
     if (selectInput.is('select')) selectInput.val('');
+    if (name === 'order_by') $('#order_by_select').val('');
 
     renderActiveChips(filter);
     if (filter.length > 0) {
