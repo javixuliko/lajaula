@@ -131,7 +131,7 @@ Página de detalle individual de cada evento, accesible desde la Shop. Está est
 ### ➕ Extras
 - Información adicional del evento: normativa, accesos, recomendaciones, etc.
 
-<img width="1692" height="603" alt="image" src="https://github.com/user-attachments/assets/37859626-e3a2-4ce5-98ed-febbe749346b" />
+<img width="1607" height="518" alt="image" src="https://github.com/user-attachments/assets/b92085d2-cd64-4ecc-a7bb-6eb5ef0dbec6" />
 
 ### 🥊 Eventos Relacionados
 - Listado de otros eventos de la **misma categoría**
