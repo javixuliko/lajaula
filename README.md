@@ -1,5 +1,3 @@
-<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/9444b934-dc36-481f-a0c9-82218f17cf96" /># 🥊 LaJaula
-
 **LaJaula** es una plataforma web de venta de entradas para **eventos de MMA**, inspirada en Ticketmaster pero enfocada exclusivamente en artes marciales mixtas: veladas, combates, galas y torneos.
 
 ---
@@ -78,17 +76,26 @@ lajaulav12/
 - Listado de próximos eventos de MMA destacados
 - Banners con imágenes de los combates
 - Navegación directa a la tienda de entradas
+- 
+<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/5dbe1a2b-b158-4662-9d5d-92f89d56754a" />
 
 ---
 
 ## 🛒 Shop (Tienda de Entradas)
+
+<img width="1892" height="860" alt="shop" src="https://github.com/user-attachments/assets/df25b32b-6288-4b16-9f5a-0c7f85e30ac7" />
 
 - Catálogo completo de eventos disponibles
 - **Filtros dinámicos alimentados desde base de datos** (categoría, fecha, ubicación, etc.)
 - **Paginación** para navegar entre resultados
 - **Sistema de popularidad** que ordena y destaca los eventos con más demanda
 - Mapa interactivo con **Leaflet.js** para visualizar la ubicación de los eventos
+
+<img width="1197" height="762" alt="mapa" src="https://github.com/user-attachments/assets/fa7f4726-6894-43db-bbab-fad3901428cf" />
+  
 - Navegación al detalle de cada evento
+
+  
 
 ---
 
