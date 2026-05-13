@@ -1,4 +1,4 @@
-# 🥊 LaJaula
+<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/9444b934-dc36-481f-a0c9-82218f17cf96" /># 🥊 LaJaula
 
 **LaJaula** es una plataforma web de venta de entradas para **eventos de MMA**, inspirada en Ticketmaster pero enfocada exclusivamente en artes marciales mixtas: veladas, combates, galas y torneos.
 
@@ -11,6 +11,8 @@
 - **Base de datos:** MySQL (gestionada con WAMP)
 - **Servidor local:** WAMP64
 - **Comunicación asíncrona:** Fetch API con Promises (`promises.js`)
+- **Acceso a base de datos:** PDO (PHP Data Objects)
+- **Mapas:** Leaflet.js (integrado en Shop y Details)
 - **Patrón:** MVC modular con módulos independientes por sección
 
 ---
@@ -71,6 +73,8 @@ lajaulav12/
 
 ## 🏠 Home
 
+<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/d7f09063-e088-41c9-ac0d-633abb42538e" />
+
 - Listado de próximos eventos de MMA destacados
 - Banners con imágenes de los combates
 - Navegación directa a la tienda de entradas
@@ -80,9 +84,11 @@ lajaulav12/
 ## 🛒 Shop (Tienda de Entradas)
 
 - Catálogo completo de eventos disponibles
-- Filtrado y búsqueda de eventos
-- Visualización de detalles por evento
-- Flujo de compra de entradas
+- **Filtros dinámicos alimentados desde base de datos** (categoría, fecha, ubicación, etc.)
+- **Paginación** para navegar entre resultados
+- **Sistema de popularidad** que ordena y destaca los eventos con más demanda
+- Mapa interactivo con **Leaflet.js** para visualizar la ubicación de los eventos
+- Navegación al detalle de cada evento
 
 ---
 
@@ -93,11 +99,19 @@ lajaulav12/
 
 ---
 
+## 📄 Details (Detalle de Evento)
+
+- Vista completa de cada evento con toda la información relevante
+- Mapa interactivo con **Leaflet.js** mostrando la ubicación exacta del recinto
+- Proceso de compra de entradas
+
+---
+
 ## 🔄 Arquitectura MVC
 
 El proyecto sigue el patrón **Modelo–Vista–Controlador** de forma modular:
 
-- **Model (DAO):** Acceso a base de datos mediante PHP. Cada módulo tiene su propio `DAO_[modulo].php`.
+- **Model (DAO):** Acceso a base de datos mediante PHP con **PDO (PHP Data Objects)**. Cada módulo tiene su propio `DAO_[modulo].php`. La conexión se centraliza en `model/connect.php`.
 - **Controller:** Lógica de negocio dividida en dos capas:
   - `ctrl_[modulo].php` — Controlador PHP (servidor)
   - `ctrl_[modulo].js` — Controlador JS (cliente), gestiona las llamadas asíncronas
@@ -133,21 +147,21 @@ http://localhost/lajaulav12/
 
 ## 📦 Componentes Reutilizables (`view/inc/`)
 
-| Archivo             | Descripción                                      |
-|---------------------|--------------------------------------------------|
-| `header.html`       | Cabecera global de la web                        |
-| `footer.html`       | Pie de página                                    |
-| `menu.html`         | Barra de navegación                              |
-| `top_page.html`     | Parte superior genérica de página                |
-| `top_page_home.html`| Parte superior específica de la home             |
-| `top_page_shop.html`| Parte superior específica de la shop             |
-| `bottom_page.html`  | Parte inferior de página                         |
-| `pages.php`         | Enrutador de páginas                             |
-| `error404.php`      | Página de error 404                              |
-| `error503.php`      | Página de error 503                              |
+| Archivo              | Descripción                                  |
+|----------------------|----------------------------------------------|
+| `header.html`        | Cabecera global de la web                    |
+| `footer.html`        | Pie de página                                |
+| `menu.html`          | Barra de navegación                          |
+| `top_page.html`      | Parte superior genérica de página            |
+| `top_page_home.html` | Parte superior específica de la home         |
+| `top_page_shop.html` | Parte superior específica de la shop         |
+| `bottom_page.html`   | Parte inferior de página                     |
+| `pages.php`          | Enrutador de páginas                         |
+| `error404.php`       | Página de error 404                          |
+| `error503.php`       | Página de error 503                          |
 
 ---
 
 ## 📜 Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT.
+Este proyecto es de uso académico.
