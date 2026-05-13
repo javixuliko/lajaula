@@ -77,7 +77,7 @@ lajaulav12/
 
 - Listado de próximos eventos de MMA destacados
 - Banners con imágenes de los combates
-- Navegación directa a la tienda de entradas
+- Navegación directa a la tienda de entradas a través de próximas peleas, luchadores, categorías, ciudades y recintos
 
 <img width="1892" height="862" alt="inicio 2" src="https://github.com/user-attachments/assets/fac92358-368f-4cac-81aa-380df1ff5752" />
 
