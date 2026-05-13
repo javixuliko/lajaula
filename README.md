@@ -113,12 +113,16 @@ lajaulav12/
 Página de detalle individual de cada evento, accesible desde la Shop. Está estructurada en las siguientes secciones:
 
 ### 🎬 Hero
-- Imagen destacada del evento a pantalla completa
-- Título, fecha y botón de compra de entradas visible desde el primer vistazo
+- Carrusel de imagenes destacado del evento a pantalla completa
+  
+<img width="1897" height="862" alt="image" src="https://github.com/user-attachments/assets/fc9d0cd6-bee5-4fba-8c21-aa167a94e5ac" />
+
 
 ### ℹ️ Información del Evento
 - Datos completos: fecha, hora, recinto, ciudad, categoría y descripción
-- Precio y disponibilidad de entradas en tiempo real
+- Precio de entradas
+
+<img width="1896" height="862" alt="image" src="https://github.com/user-attachments/assets/c21cbee9-258c-427b-87c9-cc9b97f90774" />
 
 ### 🗺️ Mapa
 - Mapa interactivo con **Leaflet.js** mostrando la ubicación exacta del recinto
@@ -127,9 +131,13 @@ Página de detalle individual de cada evento, accesible desde la Shop. Está est
 ### ➕ Extras
 - Información adicional del evento: normativa, accesos, recomendaciones, etc.
 
+<img width="1692" height="603" alt="image" src="https://github.com/user-attachments/assets/37859626-e3a2-4ce5-98ed-febbe749346b" />
+
 ### 🥊 Eventos Relacionados
 - Listado de otros eventos de la **misma categoría**
 - Permite al usuario descubrir más veladas o torneos similares sin volver a la Shop
+
+<img width="1616" height="613" alt="image" src="https://github.com/user-attachments/assets/cb187e4d-9d19-44be-992e-0aa41f92b0d0" />
 
 ---
 
