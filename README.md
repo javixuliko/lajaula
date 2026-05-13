@@ -1,3 +1,5 @@
+# 🥊 LaJaula
+
 **LaJaula** es una plataforma web de venta de entradas para **eventos de MMA**, inspirada en Ticketmaster pero enfocada exclusivamente en artes marciales mixtas: veladas, combates, galas y torneos.
 
 ---
@@ -71,19 +73,19 @@ lajaulav12/
 
 ## 🏠 Home
 
-<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/d7f09063-e088-41c9-ac0d-633abb42538e" />
+<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/603bbbd2-f922-4955-a2f0-4f4cde2a2119" />
 
 - Listado de próximos eventos de MMA destacados
 - Banners con imágenes de los combates
 - Navegación directa a la tienda de entradas
-- 
-<img width="1895" height="860" alt="inicio" src="https://github.com/user-attachments/assets/5dbe1a2b-b158-4662-9d5d-92f89d56754a" />
+
+<img width="1892" height="862" alt="inicio 2" src="https://github.com/user-attachments/assets/fac92358-368f-4cac-81aa-380df1ff5752" />
 
 ---
 
 ## 🛒 Shop (Tienda de Entradas)
 
-<img width="1892" height="860" alt="shop" src="https://github.com/user-attachments/assets/df25b32b-6288-4b16-9f5a-0c7f85e30ac7" />
+<img width="1892" height="860" alt="shop" src="https://github.com/user-attachments/assets/6f80d741-088a-4984-9e87-869172327777" />
 
 - Catálogo completo de eventos disponibles
 - **Filtros dinámicos alimentados desde base de datos** (categoría, fecha, ubicación, etc.)
@@ -91,11 +93,9 @@ lajaulav12/
 - **Sistema de popularidad** que ordena y destaca los eventos con más demanda
 - Mapa interactivo con **Leaflet.js** para visualizar la ubicación de los eventos
 
-<img width="1197" height="762" alt="mapa" src="https://github.com/user-attachments/assets/fa7f4726-6894-43db-bbab-fad3901428cf" />
+<img width="1206" height="751" alt="mapa" src="https://github.com/user-attachments/assets/95fa8f65-983c-46dc-bcee-1f49b677c0f0" />
   
 - Navegación al detalle de cada evento
-
-  
 
 ---
 
@@ -104,13 +104,32 @@ lajaulav12/
 - Búsqueda dinámica de eventos por nombre, fecha o categoría
 - Resultados en tiempo real mediante Fetch API y Promises
 
+<img width="1918" height="407" alt="image" src="https://github.com/user-attachments/assets/3beca0da-0ecb-436e-869e-e531365f5435" />
+
 ---
 
 ## 📄 Details (Detalle de Evento)
 
-- Vista completa de cada evento con toda la información relevante
+Página de detalle individual de cada evento, accesible desde la Shop. Está estructurada en las siguientes secciones:
+
+### 🎬 Hero
+- Imagen destacada del evento a pantalla completa
+- Título, fecha y botón de compra de entradas visible desde el primer vistazo
+
+### ℹ️ Información del Evento
+- Datos completos: fecha, hora, recinto, ciudad, categoría y descripción
+- Precio y disponibilidad de entradas en tiempo real
+
+### 🗺️ Mapa
 - Mapa interactivo con **Leaflet.js** mostrando la ubicación exacta del recinto
-- Proceso de compra de entradas
+- Marcador con el nombre del evento y dirección
+
+### ➕ Extras
+- Información adicional del evento: normativa, accesos, recomendaciones, etc.
+
+### 🥊 Eventos Relacionados
+- Listado de otros eventos de la **misma categoría**
+- Permite al usuario descubrir más veladas o torneos similares sin volver a la Shop
 
 ---
 
